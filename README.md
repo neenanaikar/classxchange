@@ -1,28 +1,27 @@
-# Classxchange
+# classxchange
 
 **A peer-to-peer marketplace for reselling unused boutique fitness class credits — protected by an on-chain escrow contract, not a promise.**
 
-Barry's, SoulCycle, [solidcore], and similar studios don't let you transfer a credit to someone else's account. Classxchange works around that the way it actually happens in practice: the seller keeps their credit, books the specific class the buyer asks for, and adds the buyer as a guest — while payment sits in escrow until the buyer confirms they're actually booked in.
+Barry's, SoulCycle, [solidcore], and similar studios don't let you transfer a credit to someone else's account. classxchange works around that the way it actually happens in practice: the seller keeps their credit, books the specific class the buyer asks for, and adds the buyer as a guest — while payment sits in escrow until the buyer confirms they're actually booked in.
 
-🔗 **Live app:** [app-six-roan-78.vercel.app](https://app-six-roan-78.vercel.app)
-📜 **Contract:** [`ClassEscrow` on Base Sepolia](https://sepolia.basescan.org/address/0x26294F3baF2D7289f1eEfDEd7d4df8d21d1fC1a4)
-
----
-
-## ✨ Key Features
-
-- 🔒 **Escrow-protected payments** — a Solidity contract holds funds until the buyer confirms delivery, with automatic refund/release timeouts and arbiter-resolved disputes on either side.
-- 👛 **Invisible wallets** — sign up with just an email or phone via [Privy](https://privy.io); an embedded wallet is created behind the scenes, no seed phrase or browser extension required.
-- 📅 **Class-request flow** — credits aren't tied to a specific class at listing time; buyers request their preferred date/time after claiming, and the seller books it and adds them as a guest.
-- 💰 **Real USDC, no volatility** — priced and settled in USDC, not a native token.
-- 🏷️ **Optional collateral bonds** — sellers can post a bond that's forfeited to the buyer if they lose a dispute, building trust without requiring it.
-- 👤 **Profiles & stats** — usernames, profile pictures, favorite studio/class, and a running count of classes bought/sold.
-- 🤝 **Friends & messaging** — add friends by username and message any counterparty directly from an order or profile.
-- 🎨 **Laser Neon Pink design system** — a dark, high-contrast UI with condensed display type; see [`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md).
+**Live app:** [app-six-roan-78.vercel.app](https://app-six-roan-78.vercel.app)
+**Contract:** [`ClassEscrow` on Base Sepolia](https://sepolia.basescan.org/address/0x26294F3baF2D7289f1eEfDEd7d4df8d21d1fC1a4)
 
 ---
 
-## 🧱 Tech Stack
+## Key Features
+
+- **Escrow-protected payments** — a Solidity contract holds funds until the buyer confirms delivery, with automatic refund/release timeouts and arbiter-resolved disputes on either side.
+- **Invisible wallets** — sign up with just an email or phone via [Privy](https://privy.io); an embedded wallet is created behind the scenes, no seed phrase or browser extension required.
+- **Class-request flow** — credits aren't tied to a specific class at listing time; buyers request their preferred date/time after claiming, and the seller books it and adds them as a guest.
+- **Real USDC, no volatility** — priced and settled in USDC, not a native token.
+- **Optional collateral bonds** — sellers can post a bond that's forfeited to the buyer if they lose a dispute, building trust without requiring it.
+- **Profiles & stats** — usernames, profile pictures, favorite studio/class, and a running count of classes bought/sold.
+- **Friends & messaging** — add friends by username and message any counterparty directly from an order or profile.
+
+---
+
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -35,7 +34,7 @@ Barry's, SoulCycle, [solidcore], and similar studios don't let you transfer a cr
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 classxchange/
@@ -55,7 +54,7 @@ classxchange/
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ### Prerequisites
 
@@ -120,7 +119,7 @@ The app is now running at `http://localhost:3000`.
 
 ---
 
-## 🧪 Usage Examples
+## Usage Examples
 
 ### Run a local chain and deploy the contract
 
@@ -177,7 +176,7 @@ Suite result: ok. 30 passed; 0 failed; 0 skipped
 
 ---
 
-## 📖 Further Reading
+## Further Reading
 
 - [`DESIGN.md`](DESIGN.md) — product architecture: escrow state machine, verification/dispute flow, and the reasoning behind the "seller books, buyer confirms" model
 - [`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md) — color tokens, typography, and component conventions
