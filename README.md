@@ -1,4 +1,4 @@
-# Classxchange
+# classxchange
 
 **A peer-to-peer marketplace for reselling unused boutique fitness class credits — protected by an on-chain escrow contract, not a promise.**
 
