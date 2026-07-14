@@ -1,0 +1,14 @@
+# Foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+
+# dependencies (installed via `forge install`, not vendored)
+contracts/lib/
+
+# env
+.env
+.env.*
+
+# OS
+.DS_Store
