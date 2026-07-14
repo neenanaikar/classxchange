@@ -1,0 +1,135 @@
+// classxchange off-chain data: listing/order metadata and proof references.
+// On-chain (ClassEscrow.sol) is the source of truth for money movement and
+// status transitions; this DB mirrors it for fast reads and stores the proof
+// images/URLs whose hashes are committed on-chain.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Listing {
+  id            String   @id @default(cuid())
+  onchainId     Int? // set once createListing tx confirms
+  sellerWallet  String
+  studio        String
+  classType     String? // optional — most credits are valid for any class until the buyer requests one
+  location      String
+  expiresAt     DateTime
+  priceUsdc     Int // smallest unit (6 decimals), e.g. 20000000 = $20.00
+  bondUsdc      Int      @default(0)
+  proofImageUrl String // screenshot of class balance/expiration
+  proofHash     String // keccak256 of the proof image, matches on-chain proofHash
+  status        String   @default("active") // active | claimed | cancelled
+  createdAt     DateTime @default(now())
+
+  orders Order[]
+
+  @@index([onchainId])
+}
+
+model Order {
+  id       String  @id @default(cuid())
+  onchainId Int?
+
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id])
+
+  buyerWallet  String
+  sellerWallet String
+  amountUsdc   Int
+
+  deliveryProofUrl  String? // seller's booking confirmation / guest-add proof
+  deliveryProofHash String?
+
+  // The class the buyer actually wants — submitted after claiming, since the
+  // credit isn't tied to a specific class/time until the buyer asks for one.
+  requestedAt   DateTime?
+  requestedNote String?
+
+  status String @default("claimed")
+  // claimed | requested | delivered | confirmed | disputed | resolved_seller | resolved_buyer | refunded
+
+  claimedAt        DateTime  @default(now())
+  deliveryDeadline DateTime?
+  confirmDeadline  DateTime?
+  createdAt        DateTime  @default(now())
+
+  dispute Dispute?
+
+  @@index([onchainId])
+  @@index([buyerWallet])
+  @@index([sellerWallet])
+}
+
+model Dispute {
+  id       String @id @default(cuid())
+  orderId  String @unique
+  order    Order  @relation(fields: [orderId], references: [id])
+
+  raisedBy String
+  reason   String
+
+  resolvedWinner String?
+  resolutionNote String?
+
+  createdAt  DateTime  @default(now())
+  resolvedAt DateTime?
+}
+
+// Profile info keyed by wallet address. Listing/Order still store raw wallet
+// strings (source of truth for money movement); this is joined in application
+// code, not a foreign key, so it never blocks an order/listing from existing
+// before a profile does.
+model User {
+  walletAddress   String   @id
+  username        String   @unique
+  displayName     String?
+  profileImageUrl String?
+  favoriteStudio  String?
+  favoriteClass   String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([username])
+}
+
+model Friendship {
+  id              String   @id @default(cuid())
+  requesterWallet String
+  addresseeWallet String
+  status          String   @default("pending") // pending | accepted | declined
+  createdAt       DateTime @default(now())
+  respondedAt     DateTime?
+
+  @@unique([requesterWallet, addresseeWallet])
+  @@index([addresseeWallet])
+}
+
+// Two-party DM, optionally tied to the order that started it.
+model Conversation {
+  id        String   @id @default(cuid())
+  walletA   String // normalized: walletA < walletB lexicographically
+  walletB   String
+  orderId   String?
+  createdAt DateTime @default(now())
+
+  messages Message[]
+
+  @@unique([walletA, walletB])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  senderWallet   String
+  body           String
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
+}

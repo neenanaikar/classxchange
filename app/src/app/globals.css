@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #000000;
+  --color-bg-alt: #08080a;
+  --color-surface: #121215;
+  --color-border: #1a1a22;
+
+  --color-accent: #ff007f;
+  --color-accent-alt: #ff1493;
+  --color-accent-muted: #3a001c;
+
+  --color-text: #f5f5f7;
+  --color-text-dim: #9a9aa5;
+}
+
+@theme inline {
+  --color-background: var(--color-bg);
+  --color-background-alt: var(--color-bg-alt);
+  --color-surface: var(--color-surface);
+  --color-border: var(--color-border);
+  --color-accent: var(--color-accent);
+  --color-accent-alt: var(--color-accent-alt);
+  --color-accent-muted: var(--color-accent-muted);
+  --color-foreground: var(--color-text);
+  --color-foreground-dim: var(--color-text-dim);
+
+  --font-hero: var(--font-big-shoulders);
+  --font-logo: var(--font-bebas-neue);
+  --font-heading: var(--font-oswald);
+  --font-sans: var(--font-manrope);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.input {
+  @apply block w-full border border-[color:var(--color-border)] bg-transparent px-3 py-2.5 text-sm text-[color:var(--color-text)] outline-none placeholder:text-[color:var(--color-text-dim)] focus:border-[color:var(--color-accent)];
+}
